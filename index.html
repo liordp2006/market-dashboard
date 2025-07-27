@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+
+<html lang="he">
+<head>
+<meta charset="utf-8"/>
+<title>דשבורד שוק ההון</title>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    body { margin: 0; font-family: Arial, sans-serif; direction: rtl; display: flex; }
+    .sidebar { width: 200px; background-color: #2e3b4e; color: white; height: 100vh; position: fixed; top: 0; right: 0; padding-top: 20px; z-index: 1000; }
+    .sidebar a { color: white; padding: 10px 20px; display: block; text-decoration: none; border-bottom: 1px solid #3f4e64; }
+    .sidebar a:hover { background-color: #3f4e64; }
+    .main { margin-right: 200px; padding: 20px; flex-grow: 1; }
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
+    canvas { max-width: 700px; margin-bottom: 20px; }
+    .summary { background-color: #f0f8ff; padding: 10px 15px; border: 1px solid #c0c0c0; margin-bottom: 25px; }
+  </style>
+</head>
+<body onload="renderCharts('global')">
+<div class="sidebar">
+<a href="#" onclick="showTab('global')">גלובלי</a>
+<a href="#" onclick="showTab('israel')">ישראל</a>
+<a href="#" onclick="showTab('primary')">שוק ראשוני</a>
+<a href="#" onclick="showTab('secondary')">שוק משני</a>
+<a href="#" onclick="showTab('calendar')">פרסומים</a>
+</div>
+<div class="main">
+<div class="tab-section active" id="global">
+<h2>סקירה גלובלית</h2>
+<div class="summary"><b>מסקנה:</b> הכלכלה הגלובלית מאותתת על האטה בתעשייה, עם התאוששות בשירותים. שוק הדיור האמריקאי נחלש.</div>
+<h4>תרשים 1: מדדי PMI – תעשייה ושירותים</h4><canvas id="globalPmiChart"></canvas>
+<div class="summary">
+<p>נתוני PMI מצביעים על האטה בתעשייה בארה"ב לצד שמירה על יציבות בשירותים. באירופה, ניכרת התאוששות קלה. מגזר הדיור האמריקאי מצביע על ירידה חדה בהיקף המכירות והמלאי הגבוה מאז 2008 מאותת על האטה מתמשכת. הסרת מכסים זמנית השפיעה לחיוב על היקף הזמנות ייצור ותחבורה.</p>
+</div>
+</div>
+<div class="tab-section" id="israel">
+<h2>סקירה ישראל</h2>
+<div class="summary"><b>מסקנה:</b> המשק הישראלי יציב אך האינפלציה נותרת מעל היעד, עם מגבלות מהשוק הביטחוני והצריכה.</div>
+<h4>תרשים 2: אינפלציה מול יעד בנק ישראל</h4><canvas id="inflationBar"></canvas>
+<h4>תרשים 3: מדד אמון הצרכנים – מד מחוג</h4><canvas id="consumerGauge"></canvas>
+<div class="summary">
+<p>המשק הישראלי מפגין יציבות יחסית עם האטה קלה בשוק העבודה ואינפלציה שמתייצבת סביב יעד בנק ישראל. אמון הצרכנים נותר ברמה נמוכה, אך קיימות ציפיות להורדת ריבית נוספת. הקצב המתון בצריכה הפרטית משקף חוסר ודאות כלכלית.</p>
+</div>
+</div>
+<div class="tab-section" id="primary">
+<h2>שוק ראשוני</h2>
+<div class="summary"><b>מסקנה:</b> ביקושים גבוהים באג"ח ממשלתיות – השוק מצפה להורדת ריבית.</div>
+<h4>תרשים 4: הנפקות אג"ח ממשלתיות – לפי חודש</h4><canvas id="issuanceLine"></canvas>
+<h4>תרשים 5: יחס ביקוש/היצע בהנפקות – מד מחוג</h4><canvas id="demandGauge"></canvas>
+<div class="summary">
+<p>הנפקות האוצר ביולי הסתכמו ב־6.2 מיליארד ₪, בעיקר לטווח קצר. נרשם ביקוש גבוה מהצפוי — פי 2.4 מההיצע. המשרד ניצל את סביבת הריבית והביקושים בשוק המקומי לגיוס יעיל. בולטת מגמה של העדפת אג"ח ממשלתיות קונצרניות על חשבון אג"ח פרטיות.</p>
+</div>
+</div>
+<div class="tab-section" id="secondary">
+<h2>שוק משני</h2>
+<div class="summary"><b>מסקנה:</b> פערי תשואות מדגישים עליית סיכון – בעיקר באשראי לא מדורג.</div>
+<h4>תרשים 6: מרווחים לפי דירוג אג"ח</h4><canvas id="spreadsBar"></canvas>
+<h4>תרשים 7: עקום תשואות – אג"ח ממשלתיות</h4><canvas id="yieldLine"></canvas>
+<div class="summary">
+<p>מרווחי הסיכון לפי דירוגים מאותתים על חשש מוגבר בקרב המשקיעים, בעיקר בדירוגים נמוכים. נרשמת ירידה בתשואות של אג"ח ממשלתיות ארוכות, לעומת עלייה בתשואות הקונצרניות הקצרות. הסיכון בשוק האג"ח העסקי במגמת עלייה.</p>
+</div>
+</div>
+<div class="tab-section" id="calendar">
+<h2>פרסומים כלכליים צפויים</h2>
+<table border="1" cellpadding="6" style="border-collapse: collapse; margin-top: 15px; background-color: white;">
+<thead>
+<tr><th>תאריך</th><th>פרסום</th><th>מדינה</th><th>צפי</th></tr>
+</thead>
+<tbody>
+<tr><td>27.07.2025</td><td>תפוקת תעשייה (מאי)</td><td>ישראל</td><td>0.2%</td></tr>
+<tr><td>30.07.2025</td><td>תמ"ג רבעון שני (אומדן)</td><td>ארה"ב</td><td>2.5%</td></tr>
+<tr><td>31.07.2025</td><td>מדד CPI שנתי</td><td>אירופה</td><td>2.0%</td></tr>
+<tr><td>01.08.2025</td><td>דו"ח תעסוקה</td><td>ארה"ב</td><td>118K</td></tr>
+<tr><td>01.08.2025</td><td>מדד אמון הצרכנים</td><td>ישראל</td><td>—</td></tr>
+</tbody>
+</table>
+<div class="summary"><b>מסקנה:</b> שבוע קריטי לנתוני תעסוקה, צמיחה ואינפלציה – שיקבעו את כיוון הריבית.</div>
+</div>
+</div>
+<script>
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-section').forEach(e => e.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      renderCharts(tabId);
+    }
+    function renderCharts(tabId) {
+      if (tabId === 'global' && !window.renderedGlobal) {
+        window.renderedGlobal = true;
+        new Chart(document.getElementById('globalPmiChart'), {
+          type: 'bar',
+          data: {
+            labels: ['PMI תעשייה ארה"ב', 'PMI שירותים ארה"ב', 'PMI תעשייה אירופה', 'PMI שירותים אירופה'],
+            datasets: [{
+              data: [49.5, 55.2, 51.2, 54.7],
+              backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+            }]
+          },
+          options: { plugins: { legend: { display: false } } }
+        });
+      }
+      if (tabId === 'israel' && !window.renderedIsrael) {
+        window.renderedIsrael = true;
+        new Chart(document.getElementById('inflationBar'), {
+          type: 'bar',
+          data: {
+            labels: ['יעד בנק ישראל', 'אינפלציה בפועל'],
+            datasets: [{ data: [2.0, 2.7], backgroundColor: ['#4BC0C0', '#FF6384'] }]
+          },
+          options: { indexAxis: 'y', plugins: { legend: { display: false } } }
+        });
+        new Chart(document.getElementById('consumerGauge'), {
+          type: 'doughnut',
+          data: {
+            labels: ['שלילי', 'חיובי'],
+            datasets: [{ data: [70, 30], backgroundColor: ['#FF9F40', '#36A2EB'], cutout: '80%' }]
+          },
+          options: { rotation: -90, circumference: 180, plugins: { legend: { display: false } } }
+        });
+      }
+      if (tabId === 'primary' && !window.renderedPrimary) {
+        window.renderedPrimary = true;
+        new Chart(document.getElementById('issuanceLine'), {
+          type: 'line',
+          data: {
+            labels: ['אפר', 'מאי', 'יוני', 'יולי'],
+            datasets: [{ data: [4.2, 5.1, 3.8, 6.2], borderColor: '#36A2EB', fill: false }]
+          },
+          options: { plugins: { legend: { display: false } } }
+        });
+        new Chart(document.getElementById('demandGauge'), {
+          type: 'doughnut',
+          data: {
+            labels: ['היצע', 'ביקוש'],
+            datasets: [{ data: [100, 240], backgroundColor: ['#FFCE56', '#4BC0C0'], cutout: '80%' }]
+          },
+          options: { rotation: -90, circumference: 180, plugins: { legend: { display: false } } }
+        });
+      }
+      if (tabId === 'secondary' && !window.renderedSecondary) {
+        window.renderedSecondary = true;
+        new Chart(document.getElementById('spreadsBar'), {
+          type: 'bar',
+          data: {
+            labels: ['AA', 'A', 'BBB', 'ללא דירוג'],
+            datasets: [{ data: [1.1, 2.3, 3.4, 6.0], backgroundColor: ['#36A2EB', '#FFCE56', '#FF6384', '#9966FF'] }]
+          },
+          options: { plugins: { legend: { display: false } } }
+        });
+        new Chart(document.getElementById('yieldLine'), {
+          type: 'line',
+          data: {
+            labels: ['1Y', '2Y', '5Y', '10Y'],
+            datasets: [{ data: [3.1, 3.3, 3.6, 3.9], borderColor: '#FF6384', fill: false }]
+          },
+          options: { plugins: { legend: { display: false } } }
+        });
+      }
+    }
+  </script>
+</body>
+</html>
